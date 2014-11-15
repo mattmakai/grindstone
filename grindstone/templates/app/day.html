@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                    <button class="btn btn-huge {% if di.workout %}btn-success{% else %}btn-danger{% endif %}"
+                            id="workout">Workout</button> 
+                    <button class="btn btn-huge {% if di.newsletter %}btn-success{% else %}btn-danger{% endif %}"
+                            id="newsletter">Newsletter</button> 
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_body %}
+<script type="text/javascript">
+    $(".btn").click(function(e) {
+        $(this).toggleClass("btn-danger");
+        $(this).toggleClass("btn-success");
+        $.get("/app/day/toggle/{{year}}/{{month}}/{{day}}/" + 
+            $(this)[0].id + "/");
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,7 @@
+#!/bin/bash
+export DATABASE_URL='{{ db_url_with_password }}'
+
+{% for k, v in wsgi_env_vars.iteritems() %}
+export {{ k }}="{{ v }}"
+
+{% endfor %}

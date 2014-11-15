@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% include "partials/_time_dropdown.html" %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h1>Connect</h1>
+            <p><strong>x</strong> developers assisted</p>
+            <p><strong>a</strong> new people met</p>
+            <p><strong>z</strong> newsletters sent</p>
+        </div>
+        <div class="col-md-4">
+            <h1>Write</h1>
+            <p>Average <strong>x</strong> words per day</p>
+            <div>
+                <p><strong>x</strong> blog posts published</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h1>Teach</h1>
+            <p><strong>x</strong> upcoming workshops scheduled</p>
+            <p><strong>y</strong> talks given</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Connect</h2>
+            <ul>
+                <li>Connected a with b</li>
+                <li>Introduced y to t</li>
+                <li>Recommended y to t</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Exercise</h1>
+            {% include "partials/_graph.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}

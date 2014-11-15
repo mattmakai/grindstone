@@ -1,0 +1,39 @@
+###
+# Configuration for Nginx web server
+#
+---
+
+- name: check if nginx ssl directory exists
+  stat: path=/etc/nginx/{{ app_name }}
+  register: ssldir
+
+- name: create ssl directory for nginx if it does not already exist
+  command: mkdir /etc/nginx/{{ app_name }}
+  sudo: yes
+  when: ssldir.stat.isdir is not defined
+
+- name: write SSL certificate
+  template: src={{ ssl_certs_dir }}/{{ app_name }}.crt 
+            dest=/etc/nginx/{{ app_name }}/{{ app_name }}.crt
+  sudo: yes
+  
+- name: write SSL nginx configuration
+  template: src=nginx.conf.j2 dest=/etc/nginx/conf.d/{{ app_name }}.conf
+  sudo: yes
+
+- name: write ssl certificate key
+  template: src={{ ssl_certs_dir }}/{{ app_name }}.key 
+            dest=/etc/nginx/{{ app_name }}/{{ app_name }}.key
+  sudo: yes
+
+- name: check if nginx has default symbolic linked website file
+  stat: path=/etc/nginx/sites-enabled/default
+  register: nginx_default_file
+
+- name: delete default symbolic linked website on nginx
+  command: rm /etc/nginx/sites-enabled/default
+  sudo: yes
+  when: nginx_default_file.stat.exists
+  notify:
+    - restart nginx
+

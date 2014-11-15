@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            GitHub Followers: {{ github_followers.count }}
+            <a href="{{ url_for('refresh_github') }}" class="btn btn-success">Refresh</a>
+        </div>
+        <div class="col-md-4">
+            Gmail Emails: {{ gmail_emails.count }}
+            <a href="{{ url_for('gmail_email_count') }}" class="btn btn-success">Refresh</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

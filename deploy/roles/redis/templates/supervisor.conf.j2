@@ -1,0 +1,6 @@
+[program:redis-server]
+command=redis-server
+user={{deploy_user}}
+autostart=true
+autorestart=true
+redirect_stderr=True

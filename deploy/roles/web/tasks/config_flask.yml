@@ -1,0 +1,12 @@
+###
+# Configures the Flask application including the database.
+#
+---
+
+- name: write setenvs.sh environment variables
+  template: src=setenvs.sh.j2 dest={{ app_code_dir }}/setenvs.sh
+
+- name: Flask sync tables and load initial data through manage.py
+  shell: ". {{ app_code_dir }}/setenvs.sh && {{virtualenv_dir}}/bin/python {{app_code_dir}}/manage.py syncdb"
+
+

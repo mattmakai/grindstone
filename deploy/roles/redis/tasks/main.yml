@@ -1,0 +1,24 @@
+
+- name: ensure web server packages are installed
+  apt: name={{item}}
+  sudo: yes
+  with_items:
+    - build-essential
+    - tcl8.5
+
+- name: download redis source tarball
+  get_url: url=http://download.redis.io/releases/{{redis_src_filename}}.tar.gz
+           dest=/home/{{deploy_user}}/
+
+- name: extract redis source files
+  shell: tar -xvf /home/{{deploy_user}}/{{redis_src_filename}}.tar.gz
+
+- name: make Redis
+  command: make chdir=/home/{{deploy_user}}/{{redis_src_filename}}/ 
+           creates=/home/{{deploy_user}}/{{redis_src_filename}}/src/
+
+- name: install Redis system-wide
+  command: make install chdir=/home/{{deploy_user}}/{{redis_src_filename}}/
+  sudo: yes
+
+- include: config_supervisor.yml

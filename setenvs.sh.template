@@ -1,0 +1,22 @@
+#!/bin/bash
+export DEBUG=True
+export APP_CONFIG="development"
+export SECRET_KEY='developer key'
+export DATABASE_URL='postgresql://username:password@localhost/grindstone'
+
+# Redis
+export REDIS_SERVER='localhost'
+export REDIS_PORT='6379'
+export REDIS_DB='0'
+
+# Celery
+export CELERY_BROKER_URL='redis://localhost:6379/0'
+export CELERY_RESULT_BACKEND='redis://localhost:6379/0'
+
+# Twilio credentials
+export TWILIO_ACCOUNT_SID=''
+export TWILIO_AUTH_TOKEN=''
+export TWILIO_NUMBER='' # format: +12025551234
+
+# Social accounts
+export GITHUB_USERNAME='' # example: makaimc

@@ -1,0 +1,24 @@
+###
+# Clones the app from a public or private Git repository, creates a
+# virtualenv and installs dependencies from requirements.txt.
+#
+---
+
+- name: clone or pull latest web app code
+  git: repo={{code_repository}} dest={{app_code_dir}}
+       accept_hostkey=yes key_file=/home/{{deploy_user}}/.ssh/id_rsa
+
+- name: check if virtualenv already exists
+  stat: path={{virtualenv_dir}}
+  register: venv_dir
+
+- name: create virtualenv for web application
+  shell: virtualenv {{virtualenv_dir}}
+  when: venv_dir.stat.isdir is not defined
+
+- name: install web application dependencies listed in requirements.txt
+  pip: requirements={{app_code_dir}}/requirements.txt
+       virtualenv={{virtualenv_dir}}
+  notify:
+    - restart supervisor
+    - restart nginx

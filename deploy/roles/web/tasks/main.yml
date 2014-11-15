@@ -1,0 +1,21 @@
+##
+# these scripts set up a complete web application stack that is connected
+# to the remote database backend the other deployment scripts set up
+#
+---
+
+- name: add nginx repo to apt
+  shell: echo "deb http://nginx.org/packages/ubuntu/ precise nginx" >> /etc/apt/sources.list
+  sudo: yes
+
+- name: add nginx repo key
+  shell: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62
+  sudo: yes
+
+- include: install_web_packages.yml
+- include: config_web_server.yml
+- include: clone_app_install_deps.yml
+- include: config_flask.yml
+- include: config_supervisor.yml
+
+
