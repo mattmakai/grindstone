@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block css_head %}
+<link rel="stylesheet" href="/static/css/metricsgraphics.css">
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
@@ -40,8 +44,36 @@
     <div class="row">
         <div class="col-md-12">
             <h1>Exercise</h1>
-            {% include "partials/_graph.html" %}
+            {% include "partials/_punchcard.html" %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Graph</h1>
+            <div id="drinks-per-day"></div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block js_body %}
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="/static/js/metricsgraphics.js"></script>
+<script type="text/javascript">
+  d3.json('/static/data/drinks-per-day.json', function(data) {
+    data = convert_dates(data, 'date');
+    data_graphic({
+        description: "Drinks per day.",
+        data: data,
+        width: 800,
+        height: 200,
+        target: '#drinks-per-day',
+        x_accessor: 'date',
+        y_accessor: 'drinks'
+    });
+  });
+</script>
+{% endblock %}
+
+{% block js_ready %}
 {% endblock %}
