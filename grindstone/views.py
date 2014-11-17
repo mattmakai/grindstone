@@ -2,7 +2,8 @@ import json
 import requests
 
 from datetime import datetime
-from flask import request, render_template, jsonify, redirect, url_for
+from flask import request, render_template, jsonify, redirect, url_for, \
+                  Response
 from flask.ext.login import login_user, logout_user, login_required, \
                             current_user
 from requests_oauthlib import OAuth2Session
@@ -55,6 +56,14 @@ def sign_in():
 def sign_out():
     logout_user()
     return redirect(url_for('public_view'))
+
+
+@app.route('/api/drinks/<time_period>/', methods=['GET'])
+@login_required
+def drinks_data(time_period):
+    return Response(json.dumps([{"date": "2014-09-06", "drinks": 0},
+                                {"date": "2014-09-07", "drinks": 2}]), 
+            mimetype='application/json')
 
 
 @app.route('/app/', methods=['GET'])

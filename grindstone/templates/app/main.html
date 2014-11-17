@@ -60,7 +60,7 @@
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="/static/js/metricsgraphics.js"></script>
 <script type="text/javascript">
-  d3.json('/static/data/drinks-per-day.json', function(data) {
+  d3.json('/api/drinks/month/', function(data) {
     data = convert_dates(data, 'date');
     data_graphic({
         description: "Drinks per day.",
