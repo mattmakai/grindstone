@@ -4,10 +4,18 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                    <button class="btn btn-huge {% if di.workout %}btn-success{% else %}btn-danger{% endif %}"
-                            id="workout">Workout</button> 
-                    <button class="btn btn-huge {% if di.newsletter %}btn-success{% else %}btn-danger{% endif %}"
-                            id="newsletter">Newsletter</button> 
+                <h1>{{ month }}.{{ day }}.{{ year }}</h1>
+                <div id="day-input-datepicker">
+                    <input type="text" type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-huge {% if di.workout %}btn-success{% else %}btn-danger{% endif %}"
+                        id="workout">Workout</button> 
+                <button class="btn btn-huge {% if di.newsletter %}btn-success{% else %}btn-danger{% endif %}"
+                        id="newsletter">Newsletter</button> 
             </div>
         </div>
     </div>
@@ -22,4 +30,9 @@
             $(this)[0].id + "/");
     });
 </script>
+{% endblock %}
+
+{% block js_ready %}
+    $('#day-input-datepicker input').datepicker({
+    });
 {% endblock %}

@@ -67,7 +67,8 @@ def find_day_input(year, month, day):
     except Exception as e:
         print e
         return False
-    
+
+
 
 @celery.task
 def get_wc(content_dir):

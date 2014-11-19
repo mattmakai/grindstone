@@ -22,4 +22,4 @@ login_manager.init_app(app)
 
 celery = make_celery(app)
 
-from . import views, admin, tasks #, websockets
+from . import views, admin, tasks, api #, websockets

@@ -99,6 +99,8 @@ class DayInput(db.Model):
     timestamped = db.Column(db.DateTime)
     workout = db.Column(db.Boolean, default=False)
     newsletter = db.Column(db.Boolean, default=False)
+    drinks = db.Column(db.Integer, default=0)
+    talk = db.Column(db.Boolean, default=False)
     
     def __init__(self, create_date):
         self.timestamped = create_date

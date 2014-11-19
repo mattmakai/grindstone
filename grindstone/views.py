@@ -58,13 +58,6 @@ def sign_out():
     return redirect(url_for('public_view'))
 
 
-@app.route('/api/drinks/<time_period>/', methods=['GET'])
-@login_required
-def drinks_data(time_period):
-    return Response(json.dumps([{"date": "2014-09-06", "drinks": 0},
-                                {"date": "2014-09-07", "drinks": 2}]), 
-            mimetype='application/json')
-
 
 @app.route('/app/', methods=['GET'])
 @login_required
@@ -77,6 +70,18 @@ def main():
         Follower.timestamped.desc()).first()
     return render_template('app/main.html', github_followers=gh_followers,
                            gmail_emails=gmail_emails, today=datetime.now())
+
+@app.route('/app/track/drinks/<int:year>/<int:month>/<int:day>/', 
+           methods=['GET'])
+@login_required
+def track_drinks(year, month, day):
+    find_date = datetime(year=year, month=month, day=day)
+    dt = find_drinks_tracker(year, month, day)
+    if not dt:
+        dt = DrinksTracker(find_date)
+    return render_template('app/drinks.html', year=year, month=month, day=day,
+                           today=datetime.now(), dt=dt)
+
 
 @app.route('/app/day/<int:year>/<int:month>/<int:day>/', 
            methods=['GET'])
@@ -95,7 +100,7 @@ def day(year, month, day):
 @login_required
 def day_toggle(year, month, day, tracker):
     add_or_replace_day_tracker(year, month, day, tracker)
-    return 'OK'
+    return Response('OK', 200)
 
 
 @app.route('/app/authorize-apis/', methods=['GET'])
