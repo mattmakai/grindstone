@@ -12,7 +12,8 @@ from . import app, db, login_manager, redis_db, socketio
 from .forms import LoginForm
 from .models import User, Developer, Follower, Service, DayInput
 from .tasks import github_follower_count, add_or_replace_follower_count, \
-                   add_or_replace_day_tracker, find_day_input
+                   add_or_replace_day_tracker, find_day_input, \
+                   set_day_tracker, find_today_input
 from .config import GOOGLE_CLIENT_SID, GOOGLE_CLIENT_SECRET, \
                     GOOGLE_REDIRECT_URL
 
@@ -71,6 +72,13 @@ def main():
     return render_template('app/main.html', github_followers=gh_followers,
                            gmail_emails=gmail_emails, today=datetime.now())
 
+@app.route('/app/input/', methods=['GET', 'POST'])
+def input_today():
+    return render_template('app/input.html', today=datetime.now(), 
+                           year=datetime.now().year, 
+                           month=datetime.now().month, day=datetime.now().day)
+
+
 @app.route('/app/track/drinks/<int:year>/<int:month>/<int:day>/', 
            methods=['GET'])
 @login_required
@@ -99,7 +107,7 @@ def day(year, month, day):
            methods=['GET'])
 @login_required
 def day_toggle(year, month, day, tracker):
-    add_or_replace_day_tracker(year, month, day, tracker)
+    set_day_tracker(year, month, day, tracker)
     return Response('OK', 200)
 
 

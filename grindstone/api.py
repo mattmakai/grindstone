@@ -13,3 +13,16 @@ def drinks_data(time_period):
                                 {"date": "2014-09-07", "drinks": 2}]), 
             mimetype='application/json')
 
+
+@app.route('/api/drinks/<int:year>/<int:month>/<int:day>/decr/', 
+           methods=['POST'])
+@login_required
+def decr_drinks(year, month, day):
+    return Response('ok')
+
+
+@app.route('/api/drinks/<int:year>/<int:month>/<int:day>/incr/', 
+           methods=['POST'])
+@login_required
+def incr_drinks(year, month, day):
+    return Response('ok')

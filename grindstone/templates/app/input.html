@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-huge" id="minus-drink">-</button> 
+                <button class="btn btn-huge btn-danger" 
+                        id="plus-drink">+</button> 
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_body %}
+<script type="text/javascript">
+    $("#minus-drink").click(function(e) {
+        $.post("/api/drinks/{{year}}/{{month}}/{{day}}/decr/");
+    });
+    $("#plus-drink").click(function(e) {
+        $.post("/api/drinks/{{year}}/{{month}}/{{day}}/incr/");
+    });
+</script>
+{% endblock %}

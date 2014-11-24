@@ -44,14 +44,18 @@ def add_or_replace_follower_count(service, count):
     db.session.commit()
 
 
-def add_or_replace_day_tracker(year, month, day, track):
+def add_or_replace_day_tracker(year, month, day):
     find_date = datetime(year=year, month=month, day=day)
     di = find_day_input(year, month, day)
     if not di:
         di = DayInput(find_date)
-    di.__setattr__(track, not di.__getattribute__(track))
     db.session.merge(di)
     db.session.commit()
+
+
+def set_day_tracker(year, month, day, track):
+    di = add_or_replace_day_tracker(year, month, day)
+    di.__setattr__(track, not di.__getattribute__(track))
 
 
 def find_day_input(year, month, day):
@@ -68,6 +72,12 @@ def find_day_input(year, month, day):
         print e
         return False
 
+
+def find_today_input():
+    di = add_or_replace_day_tracker(datetime.today().year, 
+                                    datetime.today().month, 
+                                    datetime.today().day)
+    return di
 
 
 @celery.task
