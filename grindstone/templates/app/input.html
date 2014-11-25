@@ -4,6 +4,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <h2>Drinks: 
+                    <span id="num-drinks">{{ day_tracker.drinks }}</span>
+                </h2>
                 <button class="btn btn-huge" id="minus-drink">-</button> 
                 <button class="btn btn-huge btn-danger" 
                         id="plus-drink">+</button> 
@@ -15,10 +18,16 @@
 {% block js_body %}
 <script type="text/javascript">
     $("#minus-drink").click(function(e) {
-        $.post("/api/drinks/{{year}}/{{month}}/{{day}}/decr/");
+        var result = $.post("/api/drinks/{{year}}/{{month}}/{{day}}/decr/",
+            function(data) {
+                $("#num-drinks").html(data.drinks);
+            });
     });
     $("#plus-drink").click(function(e) {
-        $.post("/api/drinks/{{year}}/{{month}}/{{day}}/incr/");
+        var result = $.post("/api/drinks/{{year}}/{{month}}/{{day}}/incr/",
+            function(data) {
+                $("#num-drinks").html(data.drinks);
+            });
     });
 </script>
 {% endblock %}

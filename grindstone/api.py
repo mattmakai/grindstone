@@ -3,6 +3,7 @@ import json
 from flask import request, jsonify, redirect, url_for, Response
 from flask.ext.login import login_required, current_user
 
+from .tasks import add_drinks_to_tracker
 from . import app, db, login_manager, redis_db, socketio
 
 
@@ -18,11 +19,13 @@ def drinks_data(time_period):
            methods=['POST'])
 @login_required
 def decr_drinks(year, month, day):
-    return Response('ok')
+    drinks = add_drinks_to_tracker(year, month, day, -1)
+    return jsonify({'drinks': drinks})
 
 
 @app.route('/api/drinks/<int:year>/<int:month>/<int:day>/incr/', 
            methods=['POST'])
 @login_required
 def incr_drinks(year, month, day):
-    return Response('ok')
+    drinks = add_drinks_to_tracker(year, month, day, 1)
+    return jsonify({'drinks': drinks})

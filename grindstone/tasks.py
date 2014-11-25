@@ -51,11 +51,24 @@ def add_or_replace_day_tracker(year, month, day):
         di = DayInput(find_date)
     db.session.merge(di)
     db.session.commit()
+    return di
 
 
 def set_day_tracker(year, month, day, track):
     di = add_or_replace_day_tracker(year, month, day)
     di.__setattr__(track, not di.__getattribute__(track))
+    db.session.merge(di)
+    db.session.commit()
+
+
+def add_drinks_to_tracker(year, month, day, amount):
+    di = add_or_replace_day_tracker(year, month, day)
+    di.drinks += amount
+    if di.drinks < 0:
+        di.drinks = 0
+    db.session.merge(di)
+    db.session.commit()
+    return di.drinks
 
 
 def find_day_input(year, month, day):

@@ -72,23 +72,15 @@ def main():
     return render_template('app/main.html', github_followers=gh_followers,
                            gmail_emails=gmail_emails, today=datetime.now())
 
+
 @app.route('/app/input/', methods=['GET', 'POST'])
 def input_today():
+    day_tracker = add_or_replace_day_tracker(datetime.now().year, 
+                                        datetime.now().month, 
+                                        datetime.now().day)
     return render_template('app/input.html', today=datetime.now(), 
-                           year=datetime.now().year, 
+                           year=datetime.now().year, day_tracker=day_tracker,
                            month=datetime.now().month, day=datetime.now().day)
-
-
-@app.route('/app/track/drinks/<int:year>/<int:month>/<int:day>/', 
-           methods=['GET'])
-@login_required
-def track_drinks(year, month, day):
-    find_date = datetime(year=year, month=month, day=day)
-    dt = find_drinks_tracker(year, month, day)
-    if not dt:
-        dt = DrinksTracker(find_date)
-    return render_template('app/drinks.html', year=year, month=month, day=day,
-                           today=datetime.now(), dt=dt)
 
 
 @app.route('/app/day/<int:year>/<int:month>/<int:day>/', 
