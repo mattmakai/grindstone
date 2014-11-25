@@ -105,6 +105,15 @@ class DayInput(db.Model):
     def __init__(self, create_date):
         self.timestamped = create_date
     
+    def to_json(self):
+        json_user = {
+            # 'url': url_for('day_input', id=self.id, _external=True),
+            # 'date': self.email,
+            'workout': self.workout,
+            'drinks': self.drinks,
+        }
+        return json_user
+    
 
 class Writing(db.Model):
     """
