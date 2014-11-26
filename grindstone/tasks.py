@@ -7,7 +7,7 @@ from sqlalchemy import and_
     
 from requests_oauthlib import OAuth2Session
 
-from .models import Follower, Service, DayInput
+from .models import Follower, Service, DayTrack
 from .config import GOOGLE_CLIENT_SID, GOOGLE_CLIENT_SECRET, \
                     GOOGLE_REDIRECT_URL
 from grindstone import app, db, celery
@@ -48,7 +48,7 @@ def add_or_replace_day_tracker(year, month, day):
     find_date = datetime(year=year, month=month, day=day)
     di = find_day_input(year, month, day)
     if not di:
-        di = DayInput(find_date)
+        di = DayTrack(find_date)
     db.session.merge(di)
     db.session.commit()
     return di
@@ -73,14 +73,14 @@ def add_drinks_to_tracker(year, month, day, amount):
 
 def find_day_input(year, month, day):
     """
-        Obtains DayInput with that date or returns False if not found.
+        Obtains DayTrack with that date or returns False if not found.
     """
     find_date = datetime(year=year, month=month, day=day)
     yesterday = find_date - timedelta(days=1)
     tomorrow = find_date + timedelta(days=1)
     try:
-        return DayInput.query.filter(and_(DayInput.timestamped>yesterday,
-            DayInput.timestamped<tomorrow)).all()[0]
+        return DayTrack.query.filter(and_(DayTrack.timestamped>yesterday,
+            DayTrack.timestamped<tomorrow)).all()[0]
     except Exception as e:
         print e
         return False

@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import arrow
 from flask import url_for
 from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -90,11 +91,11 @@ class Follower(db.Model):
         self.timestamped = timestamp
 
 
-class DayInput(db.Model):
+class DayTrack(db.Model):
     """
-        A single day of things I want to track.
+        A single day of tracking.
     """
-    __tablename__ = 'dayinput'
+    __tablename__ = 'daytrack'
     id = db.Column(db.Integer, primary_key=True)
     timestamped = db.Column(db.DateTime)
     workout = db.Column(db.Boolean, default=False)
@@ -107,8 +108,8 @@ class DayInput(db.Model):
     
     def to_json(self):
         json_user = {
-            # 'url': url_for('day_input', id=self.id, _external=True),
-            # 'date': self.email,
+            'url': url_for('get_daytrack', id=self.id, _external=True),
+            'date': self.timestamped,
             'workout': self.workout,
             'drinks': self.drinks,
         }

@@ -5,7 +5,7 @@ monkey.patch_all()
 import os
 
 from grindstone import app, db, redis_db, celery, socketio
-from grindstone.models import User, Service, Follower, Developer, DayInput
+from grindstone.models import User, Service, Follower, Developer, DayTrack
 from flask.ext.script import Manager, Shell
 from loader import load
 
@@ -14,7 +14,7 @@ manager = Manager(app)
 def make_shell_context():
     return dict(app=app, db=db, redis_db=redis_db, celery=celery,
                 User=User, Service=Service, Follower=Follower,
-                Developer=Developer, DayInput=DayInput)
+                Developer=Developer, DayTrack=DayTrack)
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
 
