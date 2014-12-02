@@ -105,15 +105,19 @@ class DayTrack(db.Model):
     
     def __init__(self, create_date):
         self.timestamped = create_date
+
+    @property
+    def permalink(self):
+        return url_for('get_daytrack', id=self.id, _external=True)
     
     def to_json(self):
-        json_user = {
+        json_daytrack = {
             'url': url_for('get_daytrack', id=self.id, _external=True),
-            'date': self.timestamped,
+            'date': arrow.get(self.timestamped).format("YYYY-MM-DD"),
             'workout': self.workout,
             'drinks': self.drinks,
         }
-        return json_user
+        return json_daytrack
     
 
 class Writing(db.Model):
@@ -142,4 +146,16 @@ class Service(db.Model):
     def __init__(self, name, site_url):
         self.name = name
         self.site_url = site_url
+
+    @property
+    def permalink(self):
+        return url_for('get_service', id=self.id, _external=True)
+
+    def to_json(self):
+        json_service = {
+            'url': self.permalink,
+            'name': self.name,
+            'site_url': self.site_url,
+        }
+        return json_service
 

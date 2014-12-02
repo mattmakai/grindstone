@@ -5,15 +5,26 @@ import arrow
 from flask import request, jsonify, redirect, url_for, Response
 from flask.ext.login import login_required, current_user
 
-from .models import DayTrack
+from .models import DayTrack, Service
 from .tasks import add_drinks_to_tracker
 from . import app, db, login_manager, redis_db, socketio
 
 
 @app.route('/api/', methods=['GET'])
 def list_endpoints():
-    return Response(json.dumps({'daytrackers_url': url_for('list_daytrackers',
-        _external=True),}), mimetype="application/json")
+    routes = {'daytrackers_url': url_for('list_daytrackers', _external=True),
+              'services_url': url_for('list_services', _external=True)}
+    return Response(json.dumps(routes), mimetype="application/json")
+
+
+@app.route('/api/daytracks/', methods=['GET'])
+@login_required
+def list_daytrackers():
+    daytracks_json = []
+    for d in DayTrack.query.all():
+        daytracks_json.append({'url': d.permalink})
+    return Response(json.dumps(daytracks_json), mimetype="application/json")
+
 
 @app.route('/api/daytrack/<int:id>/', methods=['GET'])
 @login_required
@@ -21,10 +32,19 @@ def get_daytrack(id):
     return jsonify(DayTrack.query.get_or_404(id).to_json())
 
 
-@app.route('/api/daytracks/', methods=['GET'])
+@app.route('/api/services/', methods=['GET'])
+def list_services():
+    services_json = []
+    for s in Service.query.all():
+        services_json.append({'url': s.permalink})
+    return Response(json.dumps(services_json), mimetype="application/json")
+
+
+@app.route('/api/service/<int:id>/', methods=['GET'])
 @login_required
-def list_daytrackers(id):
-    return jsonify(DayTrack.query.all())
+def get_service(id):
+    return jsonify(Service.query.get_or_404(id).to_json())
+
 
 
 @app.route('/api/drinks/', methods=['GET'])
