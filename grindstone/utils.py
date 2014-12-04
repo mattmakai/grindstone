@@ -1,4 +1,7 @@
+import random
+import string
 from celery import Celery
+
 
 def make_celery(app):
     celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
@@ -13,3 +16,6 @@ def make_celery(app):
     return celery
 
 
+def generate_token(size=16, chars=string.ascii_lowercase + string.digits):
+    return ''.join(random.SystemRandom().choice(string.ascii_lowercase + \
+                   string.digits) for _ in range(size))
